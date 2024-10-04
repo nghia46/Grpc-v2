@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-b-app
+  template:
+    metadata:
+      labels:
+        app: service-b-app
+    spec:
+      containers:
+      - name: service-b
+        image: nghialoe/service-b:latest
+        ports:
+          - containerPort: 5207  # gRPC (HTTP/2)\
+          - containerPort: 8080  # gRPC (HTTP/2)
+      #   volumeMounts:
+      #   - name: config-volume
+      #     mountPath: /app/config/appsettings.json
+      #     subPath: appsettings.json
+      # volumes:
+      # - name: config-volume
+      #   configMap:
+      #     name: app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b-api-lb
+spec:
+  selector:
+    app: service-b-app
+  ports:
+    - protocol: TCP
+      port: 81
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b-lb
+spec:
+  selector:
+    app: service-b-app
+  ports:
+    - protocol: TCP
+      port: 5207
+      targetPort: 5207
+  type: LoadBalancer
+---
