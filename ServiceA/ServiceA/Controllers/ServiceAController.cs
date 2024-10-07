@@ -1,7 +1,6 @@
 using Grpc.Net.Client;
 using GrpcService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace ServiceA.Controllers;
 
