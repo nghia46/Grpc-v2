@@ -31,6 +31,6 @@ public class ServiceAController : ControllerBase
 
         var reply = await client.SayHelloAsync(new HelloRequest { Name = name });
 
-        return Ok(reply.Message);
+        return Ok(reply.Message + " from ServiceA");
     }
 }

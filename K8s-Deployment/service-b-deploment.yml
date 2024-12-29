@@ -16,7 +16,7 @@ spec:
       - name: service-b
         image: nghialoe/service-b:latest
         ports:
-          - containerPort: 5207  # gRPC (HTTP/2)\
+          - containerPort: 5005  # gRPC (HTTP/2)\
           - containerPort: 8080  # gRPC (HTTP/2)
       #   volumeMounts:
       #   - name: config-volume
@@ -27,6 +27,7 @@ spec:
       #   configMap:
       #     name: app-config
 ---
+# This is the service that will be exposed to the outside world
 apiVersion: v1
 kind: Service
 metadata:
@@ -40,6 +41,7 @@ spec:
       targetPort: 8080
   type: LoadBalancer
 ---
+# This is the service for gRPC
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,7 +51,7 @@ spec:
     app: service-b-app
   ports:
     - protocol: TCP
-      port: 5207
-      targetPort: 5207
+      port: 50
+      targetPort: 5005
   type: LoadBalancer
 ---

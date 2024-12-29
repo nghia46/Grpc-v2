@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  service-a:
+    image: nghialoe/service-a:latest
+    container_name: service-a
+    ports:
+      - "80:8080"
+    networks:
+      - app-network
+  service-b:
+    image: nghialoe/service-b:latest
+    container_name: service-b
+    ports:
+      - "81:8080"  # API exposed at port 81
+      - "50:5005"  # gRPC exposed at port 50
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
