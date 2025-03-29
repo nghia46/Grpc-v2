@@ -6,6 +6,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -18,6 +19,9 @@ app.UseSwaggerUI(c =>
 });
 //Get swagger.json following root directory 
 app.UseSwagger(options => { options.RouteTemplate = "{documentName}/swagger.json"; });
+
+// Map gRPC service
+app.MapGrpcService<GreeterService>();
 
 app.UseHttpsRedirection();
 

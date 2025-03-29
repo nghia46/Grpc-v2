@@ -6,6 +6,7 @@ services:
     container_name: service-a
     ports:
       - "80:8080"
+      - "5000:5005"  # gRPC exposed at port 5000
     networks:
       - app-network
   service-b:

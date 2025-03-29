@@ -9,17 +9,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 
-
-// Log environment detection
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.ListenAnyIP(5050, listenOptions =>
-//     {
-//         listenOptions.Protocols = HttpProtocols.Http2; // HTTP/2 for gRPC
-//     });
-
-// });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,7 +25,6 @@ app.MapGrpcService<GreeterService>();
 
 // Routing for Web API
 app.UseRouting();
-
 
 app.UseAuthorization();
 

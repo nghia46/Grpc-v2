@@ -13,7 +13,7 @@ public class ServiceAController : ControllerBase
     {
         Configuration = configuration;
     }
-    [HttpGet("sayhello/{name}")]
+    [HttpPost("sayhello/{name}")]
     public async Task<IActionResult> SayHello(string name)
     {
         var httpHandler = new HttpClientHandler
@@ -21,16 +21,21 @@ public class ServiceAController : ControllerBase
             // For local development only - allows insecure HTTP/2
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         };
-
-        string serviceBUrl = Configuration["ServiceB:BaseUrl"] ?? string.Empty;
+        // Get the base URL for ServiceB from configuration
+        string serviceBUrl = Configuration["ServiceB:BaseUrl"];
+        
+        // Tạo kênh gRPC đến ServiceB
         using var channel = GrpcChannel.ForAddress(serviceBUrl, new GrpcChannelOptions
         {
             HttpHandler = httpHandler
         });
+        // Tạo client gRPC cho ServiceB
         var client = new Greeter.GreeterClient(channel);
 
-        var reply = await client.SayHelloAsync(new HelloRequest { Name = name });
+        // Gọi phương thức SayHello trên ServiceB
+        // và nhận phản hồi
+        var response = await client.SayHelloAsync(new HelloRequest { Name = name });
 
-        return Ok(reply.Message + " from ServiceA");
+        return Ok(response.Message + " from ServiceA");
     }
 }
